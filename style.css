@@ -15,7 +15,11 @@ body {
   border: solid black 1px;
 }
 
-.black {
+.dark {
   background: black;
   color: white;
+}
+
+.light {
+	background: grey;
 }
