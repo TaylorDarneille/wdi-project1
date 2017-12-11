@@ -1,0 +1,21 @@
+body {
+	text-align: center;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+  width: 75vw;
+  height: 75vw;
+  margin: auto;
+}
+
+.grid>div {
+  border: solid black 1px;
+}
+
+.black {
+  background: black;
+  color: white;
+}
