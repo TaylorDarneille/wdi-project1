@@ -1,18 +1,20 @@
-var whiteRook = "\u2656";
-var whiteKnight = "\u2658";
-var whiteBishop = "\u2657";
-var whiteQueen = "\u2655";
-var whiteKing = "\u2654";
-var whitePawn = "\u2659";
-var blackRook = "\u265C";
-var blackKnight = "\u265E";
-var blackBishop = "\u265D";
-var blackQueen = "\u265B";
-var blackKing = "\u265A";
-var blackPawn = "\u265F";
+
+// var stencilRook = "\u2656";
+// var stencilKnight = "\u2658";
+// var stencilBishop = "\u2657";
+// var stencilQueen = "\u2655";
+// var stencilKing = "\u2654";
+// var stencilPawn = "\u2659";
+// var sillouhetteRook = "\u265C";
+// var sillouhetteKnight = "\u265E";
+// var sillouhetteBishop = "\u265D";
+// var sillouhetteQueen = "\u265B";
+// var sillouhetteKing = "\u265A";
+// var sillouhettePawn = "\u265F";
 var cells = [];
-var playerUp = "white";
+var playerUp = "stencil";
 var selectedCell;
+var distance;
 
 function setUpCells() {
 	for(var i=0; i<8; i++) {
@@ -23,37 +25,60 @@ function setUpCells() {
 
 
 function loadBoard() {
-	cells[0][0].textContent = whiteRook;
-	cells[0][7].textContent = whiteRook;
-	cells[0][1].textContent = whiteKnight;
-	cells[0][6].textContent = whiteKnight;
-	cells[0][2].textContent = whiteBishop;
-	cells[0][5].textContent = whiteBishop;
-	cells[0][3].textContent = whiteQueen;
-	cells[0][4].textContent = whiteKing;
-	for(var i=0; i<8; i++) {
-		cells[1][i].textContent = whitePawn;
-		cells[1][i].classList.add("white");
-		cells[0][i].classList.add("white");
-	}
-
-	cells[7][0].textContent = blackRook;
-	cells[7][7].textContent = blackRook;
-	cells[7][1].textContent = blackKnight;
-	cells[7][6].textContent = blackKnight;
-	cells[7][2].textContent = blackBishop;
-	cells[7][5].textContent = blackBishop;
-	cells[7][3].textContent = blackQueen;
-	cells[7][4].textContent = blackKing;
-	for(var i=0; i<8; i++) {
-		cells[6][i].textContent = blackPawn;
-		cells[6][i].classList.add("black");
-		cells[7][i].classList.add("black");
+	for(var i=0; i<pieces.length; i++) {
+		var piece = pieces[i];
+		cells[piece.currRow][piece.currCol].textContent = piece.code;
+		cells[piece.currRow][piece.currCol].classList += " pieces["+i+"]";
 	}
 }
 
+// 	cells[0][0].textContent = stencilRook;
+// 	cells[0][0].classList.add("rook");
+// 	cells[0][7].textContent = stencilRook;
+// 	cells[0][7].classList.add("rook");
+// 	cells[0][1].textContent = stencilKnight;
+// 	cells[0][1].classList.add("knight");
+// 	cells[0][6].textContent = stencilKnight;
+// 	cells[0][6].classList.add("knight");
+// 	cells[0][2].textContent = stencilBishop;
+// 	cells[0][2].classList.add("bishop");
+// 	cells[0][5].textContent = stencilBishop;
+// 	cells[0][5].classList.add("bishop");
+// 	cells[0][3].textContent = stencilQueen;
+// 	cells[0][3].classList.add("queen");
+// 	cells[0][4].textContent = stencilKing;
+// 	cells[0][4].classList.add("king");
+// 	for(var i=0; i<8; i++) {
+// 		cells[1][i].textContent = stencilPawn;
+// 		cells[1][i].classList.add("pawn", "stencil");
+// 		cells[0][i].classList.add("stencil");
+// 	}
+// 	cells[7][0].textContent = sillouhetteRook;
+// 	cells[7][0].classList.add("rook");
+// 	cells[7][7].textContent = sillouhetteRook;
+// 	cells[7][7].classList.add("rook");
+// 	cells[7][1].textContent = sillouhetteKnight;
+// 	cells[7][1].classList.add("knight");
+// 	cells[7][6].textContent = sillouhetteKnight;
+// 	cells[7][6].classList.add("knight");
+// 	cells[7][2].textContent = sillouhetteBishop;
+// 	cells[7][2].classList.add("bishop");
+// 	cells[7][5].textContent = sillouhetteBishop;
+// 	cells[7][5].classList.add("bishop");
+// 	cells[7][3].textContent = sillouhetteQueen;
+// 	cells[7][3].classList.add("queen");
+// 	cells[7][4].textContent = sillouhetteKing;
+// 	cells[7][4].classList.add("king");
+// 	for(var i=0; i<8; i++) {
+// 		cells[6][i].textContent = sillouhettePawn;
+// 		cells[6][i].classList.add("pawn", "sillouhette");
+// 		cells[7][i].classList.add("sillouhette");
+// 	}
+// }
+
 function movePiece(piece, row, col) {
 	console.log("moving the piece");
+
 }
 
 function showOptions(piece) {
@@ -88,6 +113,19 @@ function displayPawnOptions() {
 document.addEventListener("DOMContentLoaded", function(){
 	setUpCells();
 	loadBoard();
+	// 
+});
+//for(var i=0; i<cells.length; i++) {
+	// 	for(var j=0; j<cells[i].length; j++) {
+	// 		console.log()
+	// 		cells[i][j].addEventListener("click", function(event) {
+	// 			console.log(this.classList);
+	// 		})
+	// 	}
+	// }
 
 
-	});
+
+
+
+
