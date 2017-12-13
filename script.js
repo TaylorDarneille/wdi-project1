@@ -2,8 +2,8 @@ var cells = [];
 var playerUp = "stencil";
 var objAtBat;
 var mysteryObj;
-var targetRow;
-var targetCol;
+// var targetRow;
+// var targetCol;
 
 function setUpCells() {
 	for(var i=0; i<8; i++) {
@@ -29,70 +29,69 @@ function getPieceObject(clickedCell) {
 	return pieces[objIndex];
 }
 
-function movePiece(piece, row, col) {
+function movePiece(piece, targetRow, targetCol) {
 	console.log("moving the "+objAtBat.team, objAtBat.piece+" from ["+objAtBat.currRow+"]["+objAtBat.currCol+"] to ["+targetRow+"]["+targetCol+"]");
+	clearOptions();
+}
+
+function clearOptions() {
+	// var optionsArr = document.getElementsByClassName("option");
+	var divs = document.getElementsByTagName("div");
+	// var captureOptionsArr = document.getElementsByClassName("captureOption");
+	// console.log(captureOptionsArr);
+	for(var i=0; i<divs.length; i++) {
+		divs[i].classList.replace("option", "empty");
+		divs[i].classList.remove("captureOption")
+	}
+	// for (var i=0; i<captureOptionsArr.length; i++) {
+	// 	captureOptionsArr[i].classList.remove("captureOption");
+	// }
 }
 
 function displayRookMoves(rookObj) {
 	//console.log(rookObj);
 	var i = rookObj.currRow;
 	var j = rookObj.currCol;
+	console.log("i: "+i+" j: "+j);
 	//down direction
 	i++;
 	while(i>=0 && i<8 && j>=0 && j<8 && cells[i][j].classList.contains("empty")) {
-		cells[i][j].classList.replace("dark", "option");
-		cells[i][j].classList.replace("light", "option");
+		cells[i][j].classList.replace("empty", "option");
 		i++;
-		//set event listener to these empty squares so if the user clicks on
-		//one, the piece moves there
-		cells[i][j].addEventListener("click", function(event){
-			targetRow = i;
-			targetCol = j;
-			movePiece(objAtBat, targetRow, targetCol);
-		});
 	}
 	checkRookCaptures(i, j);
 	//right direction
 	i = rookObj.currRow;
 	j++;
 	while(i>=0 && i<8 && j>=0 && j<8 && cells[i][j].classList.contains("empty")) {
-		cells[i][j].classList.replace("dark", "option");
-		cells[i][j].classList.replace("light", "option");
+		cells[i][j].classList.replace("empty", "option");
 		j++;
-		//set event listener to these empty squares so if the user clicks on
-		//one, the piece moves there
 	}
 	checkRookCaptures(i, j);
 	//up direction
 	i--;
 	j = rookObj.currCol;
 	while(i>=0 && i<8 && j>=0 && j<8 && cells[i][j].classList.contains("empty")) {
-		cells[i][j].classList.replace("dark", "option");
-		cells[i][j].classList.replace("light", "option");
+		cells[i][j].classList.replace("empty", "option");
 		i--;
-		//set event listener to these empty squares so if the user clicks on
-		//one, the piece moves there
 	}
 	checkRookCaptures(i, j);
 	//left direction
 	i = rookObj.currRow;
 	j--;
 	while(i>=0 && i<8 && j>=0 && j<8 && cells[i][j].classList.contains("empty")) {
-		cells[i][j].classList.replace("dark", "option");
-		cells[i][j].classList.replace("light", "option");
+		cells[i][j].classList.replace("empty", "option");
 		j--;
-		//set event listener to these empty squares so if the user clicks on
-		//one, the piece moves there
 	}
 	checkRookCaptures(i, j);
 }
 
 function checkRookCaptures(i,j) {
 	if(i>=0 && i<8 && j>=0 && j<8 && !cells[i][j].classList.contains("empty")) {
+		console.log("checkingRookCaptures");
 		mysteryObj = getPieceObject(cells[i][j]);
 		if(mysteryObj.team !== objAtBat.team) {
-			cells[i][j].classList.replace("dark", "captureOption");
-			cells[i][j].classList.replace("light", "captureOption");
+			cells[i][j].classList.add("captureOption");
 			//set event listener to capture the opponents piece if the user
 			//clicks here
 		}
@@ -131,12 +130,19 @@ document.addEventListener("DOMContentLoaded", function(){
 	loadBoard();
 	for(var i=0; i<cells.length; i++) {
 		for(var j=0; j<cells[i].length; j++) {
-			console.log()
 			cells[i][j].addEventListener("click", function(event) {
-				if(this.classList[0] !== "empty") {
+				if(this.classList[0] !== "empty" && this.classList[0] !== "option") {
 					objAtBat = getPieceObject(this);
 					console.log(objAtBat);
 					displayRookMoves(objAtBat);
+				}
+				else if (this.classList[0] === "option") {
+					console.log(this);
+					var targetRow = this.classList[1][3];
+					var targetCol = this.classList[2][3];
+					console.log("targetRow: "+targetRow);
+					console.log("targetCol: "+targetCol);
+					movePiece(objAtBat, targetRow, targetCol);
 				}
 				else {
 					console.log("empty");
