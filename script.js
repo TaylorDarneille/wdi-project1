@@ -12,7 +12,6 @@ function setUpCells() {
 	}
 }
 
-
 function loadBoard() {
 	for(var i=0; i<pieces.length; i++) {
 		var piece = pieces[i];
@@ -30,22 +29,20 @@ function getPieceObject(clickedCell) {
 }
 
 function movePiece(piece, targetRow, targetCol) {
-	console.log("moving the "+objAtBat.team, objAtBat.piece+" from ["+objAtBat.currRow+"]["+objAtBat.currCol+"] to ["+targetRow+"]["+targetCol+"]");
 	clearOptions();
+	console.log("moving the "+objAtBat.team, objAtBat.piece+" from ["+objAtBat.currRow+"]["+objAtBat.currCol+"] to ["+targetRow+"]["+targetCol+"]");
+	cells[objAtBat.currRow][objAtBat.currCol].textContent = ""; //remove unicode from starting cell
+	cells[targetRow][targetCol].textContent = objAtBat.code; //add unicode to target cell
+	cells[objAtBat.currRow][objAtBat.currCol].classList.remove("pieces["+pieces.indexOf(objAtBat)+"]"); // remove the piece[i] class from the starting cell
+	cells[targetRow][targetCol].classList.replace("empty", "pieces["+pieces.indexOf(objAtBat)+"]"); // add the piece[i] class to the target cell
 }
 
 function clearOptions() {
-	// var optionsArr = document.getElementsByClassName("option");
 	var divs = document.getElementsByTagName("div");
-	// var captureOptionsArr = document.getElementsByClassName("captureOption");
-	// console.log(captureOptionsArr);
 	for(var i=0; i<divs.length; i++) {
 		divs[i].classList.replace("option", "empty");
 		divs[i].classList.remove("captureOption")
 	}
-	// for (var i=0; i<captureOptionsArr.length; i++) {
-	// 	captureOptionsArr[i].classList.remove("captureOption");
-	// }
 }
 
 function displayRookMoves(rookObj) {
