@@ -26,14 +26,14 @@ var pieces = [
 // {
 // 	//rook sillouhette #2
 // },
-{
-	piece: "knight",
-	team: "stencil",
-	code: "\u2658",
-	currRow: 0,
-	currCol: 1,
-	moves: [[-1,2],[-1,-2],[1,2],[1,-2],[-2,1],[-2,-1],[2,1],[2,-1]]
-},
+// {
+// 	piece: "knight",
+// 	team: "stencil",
+// 	code: "\u2658",
+// 	currRow: 0,
+// 	currCol: 1,
+// 	moves: [[-1,2],[-1,-2],[1,2],[1,-2],[-2,1],[-2,-1],[2,1],[2,-1]]
+// },
 {
 	piece: "knight",
   	team: "stencil",

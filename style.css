@@ -1,7 +1,6 @@
 body {
 	text-align: center;
 }
-
 .grid {
   display: grid;
   grid-template-columns: repeat(8, 1fr);
@@ -10,16 +9,19 @@ body {
   height: 75vw;
   margin: auto;
 }
-
 .grid>div {
   border: solid black 1px;
 }
-
 .dark {
   background: black;
   color: white;
 }
-
 .light {
 	background: grey;
+}
+.option {
+	background: chartreuse;
+}
+.captureOption {
+	background: red;
 }
