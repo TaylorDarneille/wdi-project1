@@ -7,7 +7,7 @@ var pieces = [
 	code: "\u2656",
 	currRow: 0,
 	currCol: 0,
-	//moves: [[0, this.distance],[this.distance, 0],[0, -this.distance],[-this.distance, 0]]
+	moves: [[0, this.distance],[this.distance, 0],[0, -this.distance],[-this.distance, 0]]
 	// specialMoves: [{condition: //this piece and the king are in their original position,
 	// 							//knight and bishop are out of the way
 	// 							//king is not currently in check

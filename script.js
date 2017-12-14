@@ -22,19 +22,36 @@ function loadBoard() {
 
 function getPieceObject(clickedCell) {
 	var objStr = clickedCell.classList[0];
-	console.log("objStr: " + objStr);
+	//console.log("objStr: " + objStr);
 	var objIndex = objStr.charAt(7);
-	console.log("objIndex: " + objIndex);
+	//console.log("objIndex: " + objIndex);
 	return pieces[objIndex];
 }
 
-function movePiece(piece, targetRow, targetCol) {
+function movePiece(targetRow, targetCol) {
 	clearOptions();
 	console.log("moving the "+objAtBat.team, objAtBat.piece+" from ["+objAtBat.currRow+"]["+objAtBat.currCol+"] to ["+targetRow+"]["+targetCol+"]");
 	cells[objAtBat.currRow][objAtBat.currCol].textContent = ""; //remove unicode from starting cell
 	cells[targetRow][targetCol].textContent = objAtBat.code; //add unicode to target cell
-	cells[objAtBat.currRow][objAtBat.currCol].classList.remove("pieces["+pieces.indexOf(objAtBat)+"]"); // remove the piece[i] class from the starting cell
-	cells[targetRow][targetCol].classList.replace("empty", "pieces["+pieces.indexOf(objAtBat)+"]"); // add the piece[i] class to the target cell
+	cells[objAtBat.currRow][objAtBat.currCol].classList.replace("pieces["+pieces.indexOf(objAtBat)+"]", "empty"); // replace the piece[i] class with the empty class
+	if (cells[targetRow][targetCol].classList.contains("empty")){
+		cells[targetRow][targetCol].classList.replace("empty", "pieces["+pieces.indexOf(objAtBat)+"]"); // add the piece[i] class to the target cell
+	}
+	else {
+		var enemy = getPieceObject(cells[targetRow][targetCol]);
+		cells[targetRow][targetCol].classList.replace("pieces["+pieces.indexOf("enemy")+"]", "pieces["+pieces.indexOf(objAtBat)+"]");
+		enemy.currRow = -1;
+		enemy.currCol = -1;
+		console.log(enemy);
+	}
+	objAtBat.currRow = targetRow; //update the current position
+	objAtBat.currCol = targetCol;
+	if(playerUp === "stencil") {
+		playerUp = "sillouhette";
+	}
+	else {
+		playerUp = "stencil";
+	}
 }
 
 function clearOptions() {
@@ -45,10 +62,9 @@ function clearOptions() {
 	}
 }
 
-function displayRookMoves(rookObj) {
-	//console.log(rookObj);
-	var i = rookObj.currRow;
-	var j = rookObj.currCol;
+function displayLinearMoves(piece) {
+	var i = piece.currRow;
+	var j = piece.currCol;
 	console.log("i: "+i+" j: "+j);
 	//down direction
 	i++;
@@ -56,70 +72,41 @@ function displayRookMoves(rookObj) {
 		cells[i][j].classList.replace("empty", "option");
 		i++;
 	}
-	checkRookCaptures(i, j);
+	checkCaptures(i, j);
 	//right direction
-	i = rookObj.currRow;
+	i = piece.currRow;
 	j++;
 	while(i>=0 && i<8 && j>=0 && j<8 && cells[i][j].classList.contains("empty")) {
 		cells[i][j].classList.replace("empty", "option");
 		j++;
 	}
-	checkRookCaptures(i, j);
+	checkCaptures(i, j);
 	//up direction
 	i--;
-	j = rookObj.currCol;
+	j = piece.currCol;
 	while(i>=0 && i<8 && j>=0 && j<8 && cells[i][j].classList.contains("empty")) {
 		cells[i][j].classList.replace("empty", "option");
 		i--;
 	}
-	checkRookCaptures(i, j);
+	checkCaptures(i, j);
 	//left direction
-	i = rookObj.currRow;
+	i = piece.currRow;
 	j--;
 	while(i>=0 && i<8 && j>=0 && j<8 && cells[i][j].classList.contains("empty")) {
 		cells[i][j].classList.replace("empty", "option");
 		j--;
 	}
-	checkRookCaptures(i, j);
+	checkCaptures(i, j);
 }
 
-function checkRookCaptures(i,j) {
+function checkCaptures(i,j) {
 	if(i>=0 && i<8 && j>=0 && j<8 && !cells[i][j].classList.contains("empty")) {
-		console.log("checkingRookCaptures");
 		mysteryObj = getPieceObject(cells[i][j]);
 		if(mysteryObj.team !== objAtBat.team) {
 			cells[i][j].classList.add("captureOption");
-			//set event listener to capture the opponents piece if the user
-			//clicks here
 		}
 	}
 }
-
-
-
-// function showOptions(piece) {
-// 	console.log("showing options");
-// 	var optionsArr = [];
-// 	switch(piece){
-// 		case rook:
-// 			displayRookOptions();
-// 			break;
-// 		case knight:
-// 			displayKnightOptions();
-// 			break;
-// 		case bishop:
-// 			displayBishopOptions();
-// 			break;
-// 		case queen:
-// 			displayQueenOptions();
-// 		case king:
-// 			displayKingOptions();
-// 		case pawn:
-// 			displayPawnOptions();
-// 		default: 
-// 			console.log("defaulting");
-// 	}
-// }
 
 
 document.addEventListener("DOMContentLoaded", function(){
@@ -128,18 +115,21 @@ document.addEventListener("DOMContentLoaded", function(){
 	for(var i=0; i<cells.length; i++) {
 		for(var j=0; j<cells[i].length; j++) {
 			cells[i][j].addEventListener("click", function(event) {
-				if(this.classList[0] !== "empty" && this.classList[0] !== "option") {
-					objAtBat = getPieceObject(this);
-					console.log(objAtBat);
-					displayRookMoves(objAtBat);
+				console.log("playerUp:"+playerUp);
+				if(this.classList[0] !== "empty" && this.classList[0] !== "option" && !this.classList.contains("captureOption")) {
+					if (playerUp !== getPieceObject(this).team) {
+						//console.log("you can only play your own pieces");
+					}
+					else { 
+						objAtBat = getPieceObject(this);
+						//console.log("team:"+objAtBat.team);
+						displayLinearMoves(objAtBat);
+					}
 				}
-				else if (this.classList[0] === "option") {
-					console.log(this);
+				else if (this.classList[0] === "option" || this.classList.contains("captureOption")) {
 					var targetRow = this.classList[1][3];
 					var targetCol = this.classList[2][3];
-					console.log("targetRow: "+targetRow);
-					console.log("targetCol: "+targetCol);
-					movePiece(objAtBat, targetRow, targetCol);
+					movePiece(targetRow, targetCol);
 				}
 				else {
 					console.log("empty");
@@ -149,9 +139,3 @@ document.addEventListener("DOMContentLoaded", function(){
 		}
 	}
 });
-
-
-
-
-
-
