@@ -62,42 +62,42 @@ function clearOptions() {
 	}
 }
 
-function displayLinearMoves(piece) {
-	var i = piece.currRow;
-	var j = piece.currCol;
-	console.log("i: "+i+" j: "+j);
-	//down direction
-	i++;
-	while(i>=0 && i<8 && j>=0 && j<8 && cells[i][j].classList.contains("empty")) {
-		cells[i][j].classList.replace("empty", "option");
-		i++;
-	}
-	checkCaptures(i, j);
-	//right direction
-	i = piece.currRow;
-	j++;
-	while(i>=0 && i<8 && j>=0 && j<8 && cells[i][j].classList.contains("empty")) {
-		cells[i][j].classList.replace("empty", "option");
-		j++;
-	}
-	checkCaptures(i, j);
-	//up direction
-	i--;
-	j = piece.currCol;
-	while(i>=0 && i<8 && j>=0 && j<8 && cells[i][j].classList.contains("empty")) {
-		cells[i][j].classList.replace("empty", "option");
-		i--;
-	}
-	checkCaptures(i, j);
-	//left direction
-	i = piece.currRow;
-	j--;
-	while(i>=0 && i<8 && j>=0 && j<8 && cells[i][j].classList.contains("empty")) {
-		cells[i][j].classList.replace("empty", "option");
-		j--;
-	}
-	checkCaptures(i, j);
-}
+// function displayLinearMoves(piece) {
+// 	var i = piece.currRow;
+// 	var j = piece.currCol;
+// 	console.log("i: "+i+" j: "+j);
+// 	//down direction
+// 	i++;
+// 	while(i>=0 && i<8 && j>=0 && j<8 && cells[i][j].classList.contains("empty")) {
+// 		cells[i][j].classList.replace("empty", "option");
+// 		i++;
+// 	}
+// 	checkCaptures(i, j);
+// 	//right direction
+// 	i = piece.currRow;
+// 	j++;
+// 	while(i>=0 && i<8 && j>=0 && j<8 && cells[i][j].classList.contains("empty")) {
+// 		cells[i][j].classList.replace("empty", "option");
+// 		j++;
+// 	}
+// 	checkCaptures(i, j);
+// 	//up direction
+// 	i--;
+// 	j = piece.currCol;
+// 	while(i>=0 && i<8 && j>=0 && j<8 && cells[i][j].classList.contains("empty")) {
+// 		cells[i][j].classList.replace("empty", "option");
+// 		i--;
+// 	}
+// 	checkCaptures(i, j);
+// 	//left direction
+// 	i = piece.currRow;
+// 	j--;
+// 	while(i>=0 && i<8 && j>=0 && j<8 && cells[i][j].classList.contains("empty")) {
+// 		cells[i][j].classList.replace("empty", "option");
+// 		j--;
+// 	}
+// 	checkCaptures(i, j);
+// }
 
 function checkCaptures(i,j) {
 	if(i>=0 && i<8 && j>=0 && j<8 && !cells[i][j].classList.contains("empty")) {
@@ -123,7 +123,7 @@ document.addEventListener("DOMContentLoaded", function(){
 					else { 
 						objAtBat = getPieceObject(this);
 						//console.log("team:"+objAtBat.team);
-						displayLinearMoves(objAtBat);
+						displayKnightMoves(objAtBat);
 					}
 				}
 				else if (this.classList[0] === "option" || this.classList.contains("captureOption")) {
