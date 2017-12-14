@@ -75,21 +75,46 @@ function displayDiagonalMoves(piece) {
 }
 
 function displayPawnMoves(piece) {
+	console.log("displaying pawn moves");
 	var i = piece.currRow;
 	var j = piece.currCol;
+	var optionsArr = [];
+	var captureOptionsArr = [];
 	if(piece.team === "stencil") {
+		console.log("enterring first if-statment");
 		if(i===1) {
-			//can move two spaces down	
+			optionsArr.push({i: i+2, j: j+2}); //can move two spaces down
 		}
-		//can move one space down
-		//check captures for down left and down right
+			optionsArr.push({i: i+1, j: j+2}); //can move one space down
+			captureOptionsArr.push({i: i+1, j: j-1}); //check captures for down left
+			captureOptionsArr.push({i: i+1, j: j+1}); //check captures for and down right
 	}
 	else {
 		if(i===6) {
-			//can move two spaces up
+			optionsArr.push({i: i-2, j: j});//can move two spaces up
 		}
-		//can move one space up
-		//check captures for up left and up right
+		optionsArr.push({i: i-1, j: j}); //can move one space up
+		captureOptionsArr.push({i: i-1, j: j-1}); //check captures for up left
+		captureOptionsArr.push({i: i-1, j: j+1}); //check captures for up right
+	}
+	console.log("optionsArr: "+ optionsArr);
+	console.log("captureOptionsArr: " + captureOptionsArr);
+	for(var k=0; k<optionsArr.length; k++) {
+		var m = optionsArr[k].i;
+		var n = optionsArr[k].j;
+		if(m>=0 && m<8 && n>=0 && n<8 && cells[m][n].classList.contains("empty")) {
+			cells[m][j].classList.replace("empty", "option");
+		}
+	}
+	for(var k=0; k<captureOptionsArr.length; k++) {
+		m = captureOptionsArr[k].i;
+		n = captureOptionsArr[k].j;
+		if(m>=0 && m<8 && n>=0 && n<8 && !cells[m][n].classList.contains("empty")) {
+			mysteryObj = getPieceObject(cells[m][n]);
+			if(mysteryObj.team !== objAtBat.team) {
+				cells[m][n].classList.add("captureOption");
+			}
+		}
 	}
 }
 

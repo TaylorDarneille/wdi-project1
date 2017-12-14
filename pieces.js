@@ -107,11 +107,11 @@ var pieces = [
 // {
 // 	//king sillouhette
 // },
-// {
-// 	piece: "pawn", 
-// 	team: "stencil",
-// 	code: "\u2659",
-// 	currRow: 1,
-// 	currCol: 0,
-// }
+{
+	piece: "pawn", 
+	team: "stencil",
+	code: "\u2659",
+	currRow: 1,
+	currCol: 0,
+}
 ]

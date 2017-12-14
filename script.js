@@ -51,6 +51,8 @@ function showMoves(piece) {
 			break;
 		case "king":
 		case "pawn":
+			displayPawnMoves(piece);
+			break;
 		default:
 			console.log("defaulting");
 	}
