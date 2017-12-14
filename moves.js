@@ -148,3 +148,30 @@ function displayKnightMoves(piece) {
 		}
 	}
 }
+
+function displayKingMoves(piece) {
+	var i = piece.currRow;
+	var j = piece.currCol;
+	var options = [[1,0],
+					[0,1],
+					[0,-1],
+					[-1,0],
+					[1,-1],
+					[-1,1],
+					[1,1],
+					[-1,-1]];
+	for(var k=0; k<options.length; k++) {
+		var m = i+options[k][0];
+		var n = j+options[k][1];
+		if(m>=0 && m<8 && n>=0 && n<8 && cells[m][n].classList.contains("empty")) {
+			cells[m][n].classList.replace("empty", "option");
+		}
+		else if (m>=0 && m<8 && n>=0 && n<8){
+			mysteryObj = getPieceObject(cells[m][n]);
+			if(mysteryObj.team !== objAtBat.team) {
+				cells[m][n].classList.add("captureOption");
+			}
+		}
+	}
+
+}

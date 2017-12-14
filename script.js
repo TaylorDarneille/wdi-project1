@@ -50,6 +50,8 @@ function showMoves(piece) {
 			displayDiagonalMoves(piece);
 			break;
 		case "king":
+			displayKingMoves(piece);
+			break;
 		case "pawn":
 			displayPawnMoves(piece);
 			break;

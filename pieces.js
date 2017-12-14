@@ -21,7 +21,7 @@ var pieces = [
 	team: "sillouhette",
 	code: "\u265C",
 	currRow: 7,
-	currCol: 0,
+	currCol: 0
 },
 {
 	//rook sillouhette #2
@@ -29,89 +29,203 @@ var pieces = [
 	team: "sillouhette",
 	code: "\u265C",
 	currRow: 7,
-	currCol: 7,
+	currCol: 7
 },
 {
 	piece: "knight",
 	team: "stencil",
 	code: "\u2658",
 	currRow: 0,
-	currCol: 1,
+	currCol: 1
 },
 {
 	piece: "knight",
   	team: "stencil",
   	code: "\u2658",
   	currRow: 0,
-  	currCol: 6,
+  	currCol: 6
 },
 {
 	piece: "knight",
   	team: "sillouhette",
   	code: "\u265E",
   	currRow: 7,
-  	currCol: 1,
+  	currCol: 1
 },
 {
 	piece: "knight",
   	team: "sillouhette",
   	code: "\u265E",
   	currRow: 7,
-  	currCol: 6,
+  	currCol: 6
 },
 {
 	piece: "bishop",
   	team: "stencil",
   	code: "\u2657",
   	currRow: 0,
-  	currCol: 2,
+  	currCol: 2
 },
 {
 	piece: "bishop",
   	team: "stencil",
   	code: "\u2657",
   	currRow: 0,
-  	currCol: 5,
+  	currCol: 5
 },
 {
 	piece: "bishop",
   	team: "sillouhette",
   	code: "\u265D",
   	currRow: 7,
-  	currCol: 2,
+  	currCol: 2
 },
 {
 	piece: "bishop",
   	team: "sillouhette",
   	code: "\u265D",
   	currRow: 7,
-  	currCol: 5,
+  	currCol: 5
 },
 {
 	piece: "queen",
 	team: "stencil",
 	code: "\u2655",
 	currRow: 0,
-	currCol: 3,
+	currCol: 3
 },
 {
 	piece: "queen",
 	team: "sillouhette",
 	code: "\u265B",
 	currRow: 7,
-	currCol: 3,
+	currCol: 3
 },
-// {
-// 	//king stencil
-// },
-// {
-// 	//king sillouhette
-// },
+{
+	//king stencil
+	piece: "king",
+	team: "stencil",
+	code: "\u2654",
+	currRow: 0,
+	currCol: 4
+},
+{
+	//king sillouhette
+	piece: "king",
+	team: "sillouhette",
+	code: "\u265A",
+	currRow: 7,
+	currCol: 4
+},
 {
 	piece: "pawn", 
 	team: "stencil",
 	code: "\u2659",
 	currRow: 1,
-	currCol: 0,
-}
-]
+	currCol: 0
+},
+{
+	piece: "pawn", 
+	team: "stencil",
+	code: "\u2659",
+	currRow: 1,
+	currCol: 1
+},
+{
+	piece: "pawn", 
+	team: "stencil",
+	code: "\u2659",
+	currRow: 1,
+	currCol: 2
+},
+{
+	piece: "pawn", 
+	team: "stencil",
+	code: "\u2659",
+	currRow: 1,
+	currCol: 3
+},
+{
+	piece: "pawn", 
+	team: "stencil",
+	code: "\u2659",
+	currRow: 1,
+	currCol: 4
+},
+{
+	piece: "pawn", 
+	team: "stencil",
+	code: "\u2659",
+	currRow: 1,
+	currCol: 5
+},
+{
+	piece: "pawn", 
+	team: "stencil",
+	code: "\u2659",
+	currRow: 1,
+	currCol: 6
+},
+{
+	piece: "pawn", 
+	team: "stencil",
+	code: "\u2659",
+	currRow: 1,
+	currCol: 7
+},
+{
+	piece: "pawn", 
+	team: "sillouhette",
+	code: "\u265F",
+	currRow: 6,
+	currCol: 0
+},
+{
+	piece: "pawn", 
+	team: "sillouhette",
+	code: "\u265F",
+	currRow: 6,
+	currCol: 1
+},
+{
+	piece: "pawn", 
+	team: "sillouhette",
+	code: "\u265F",
+	currRow: 6,
+	currCol: 2
+},
+{
+	piece: "pawn", 
+	team: "sillouhette",
+	code: "\u265F",
+	currRow: 6,
+	currCol: 3
+},
+{
+	piece: "pawn", 
+	team: "sillouhette",
+	code: "\u265F",
+	currRow: 6,
+	currCol: 4
+},
+{
+	piece: "pawn", 
+	team: "sillouhette",
+	code: "\u265F",
+	currRow: 6,
+	currCol: 5
+},
+{
+	piece: "pawn", 
+	team: "sillouhette",
+	code: "\u265F",
+	currRow: 6,
+	currCol: 6
+},
+{
+	piece: "pawn", 
+	team: "sillouhette",
+	code: "\u265F",
+	currRow: 6,
+	currCol: 7
+}]
