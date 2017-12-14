@@ -21,11 +21,39 @@ function loadBoard() {
 }
 
 function getPieceObject(clickedCell) {
+	console.log("clickedCell: "+clickedCell.classList[1]);
 	var objStr = clickedCell.classList[0];
 	//console.log("objStr: " + objStr);
-	var objIndex = objStr.charAt(7);
+	if(objStr.length === 9) {
+		var objIndex = objStr.charAt(7);
+	}
+	else {
+		var objIndex = objStr.charAt(7)+objStr.charAt(8);
+	}
 	//console.log("objIndex: " + objIndex);
 	return pieces[objIndex];
+}
+
+function showMoves(piece) {
+	switch (piece.piece) {
+		case "rook":
+			displayLinearMoves(piece);
+			break;
+		case "knight":
+			displayKnightMoves(piece);
+			break;
+		case "bishop":
+			displayDiagonalMoves(piece);
+			break;
+		case "queen":
+			displayLinearMoves(piece);
+			displayDiagonalMoves(piece);
+			break;
+		case "king":
+		case "pawn":
+		default:
+			console.log("defaulting");
+	}
 }
 
 function movePiece(targetRow, targetCol) {
@@ -39,13 +67,19 @@ function movePiece(targetRow, targetCol) {
 	}
 	else {
 		var enemy = getPieceObject(cells[targetRow][targetCol]);
-		cells[targetRow][targetCol].classList.replace("pieces["+pieces.indexOf("enemy")+"]", "pieces["+pieces.indexOf(objAtBat)+"]");
+		var capturedClass = cells[targetRow][targetCol].classList[0];
+		console.log("capturedClass:"+capturedClass);
+		cells[targetRow][targetCol].classList.replace(capturedClass, "pieces["+pieces.indexOf(objAtBat)+"]");
 		enemy.currRow = -1;
 		enemy.currCol = -1;
 		console.log(enemy);
 	}
+	//var debughelper2 = typeof targetRow;
+	//console.log("inside the movePiece function, targetRow is stored as: "+debughelper2);
 	objAtBat.currRow = targetRow; //update the current position
 	objAtBat.currCol = targetCol;
+	console.log("this piece's new currRow:"+ objAtBat.currRow);
+	console.log("this piece's new currCol:"+ objAtBat.currCol);
 	if(playerUp === "stencil") {
 		playerUp = "sillouhette";
 	}
@@ -61,43 +95,6 @@ function clearOptions() {
 		divs[i].classList.remove("captureOption")
 	}
 }
-
-// function displayLinearMoves(piece) {
-// 	var i = piece.currRow;
-// 	var j = piece.currCol;
-// 	console.log("i: "+i+" j: "+j);
-// 	//down direction
-// 	i++;
-// 	while(i>=0 && i<8 && j>=0 && j<8 && cells[i][j].classList.contains("empty")) {
-// 		cells[i][j].classList.replace("empty", "option");
-// 		i++;
-// 	}
-// 	checkCaptures(i, j);
-// 	//right direction
-// 	i = piece.currRow;
-// 	j++;
-// 	while(i>=0 && i<8 && j>=0 && j<8 && cells[i][j].classList.contains("empty")) {
-// 		cells[i][j].classList.replace("empty", "option");
-// 		j++;
-// 	}
-// 	checkCaptures(i, j);
-// 	//up direction
-// 	i--;
-// 	j = piece.currCol;
-// 	while(i>=0 && i<8 && j>=0 && j<8 && cells[i][j].classList.contains("empty")) {
-// 		cells[i][j].classList.replace("empty", "option");
-// 		i--;
-// 	}
-// 	checkCaptures(i, j);
-// 	//left direction
-// 	i = piece.currRow;
-// 	j--;
-// 	while(i>=0 && i<8 && j>=0 && j<8 && cells[i][j].classList.contains("empty")) {
-// 		cells[i][j].classList.replace("empty", "option");
-// 		j--;
-// 	}
-// 	checkCaptures(i, j);
-// }
 
 function checkCaptures(i,j) {
 	if(i>=0 && i<8 && j>=0 && j<8 && !cells[i][j].classList.contains("empty")) {
@@ -116,19 +113,24 @@ document.addEventListener("DOMContentLoaded", function(){
 		for(var j=0; j<cells[i].length; j++) {
 			cells[i][j].addEventListener("click", function(event) {
 				console.log("playerUp:"+playerUp);
+				console.log(this);
 				if(this.classList[0] !== "empty" && this.classList[0] !== "option" && !this.classList.contains("captureOption")) {
+					//console.log("entering first if statement");
 					if (playerUp !== getPieceObject(this).team) {
-						//console.log("you can only play your own pieces");
+						console.log("you can only play your own pieces");
 					}
 					else { 
 						objAtBat = getPieceObject(this);
-						//console.log("team:"+objAtBat.team);
-						displayKnightMoves(objAtBat);
+						showMoves(objAtBat);
+						console.log("debugg: "+objAtBat.team, objAtBat.piece);
 					}
 				}
 				else if (this.classList[0] === "option" || this.classList.contains("captureOption")) {
-					var targetRow = this.classList[1][3];
-					var targetCol = this.classList[2][3];
+					// var targetRow = this.classList[1][3];
+					// var targetCol = this.classList[2][3];
+					var targetRow = parseInt(this.classList[1][3]);
+					var targetCol = parseInt(this.classList[2][3]);
+					//console.log("targetRow: "+ targetRow);
 					movePiece(targetRow, targetCol);
 				}
 				else {
