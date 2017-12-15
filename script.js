@@ -2,8 +2,6 @@ var cells = [];
 var playerUp = "stencil";
 var objAtBat;
 var mysteryObj;
-// var targetRow;
-// var targetCol;
 
 function setUpCells() {
 	for(var i=0; i<8; i++) {
@@ -23,14 +21,12 @@ function loadBoard() {
 function getPieceObject(clickedCell) {
 	console.log("clickedCell: "+clickedCell.classList[1]);
 	var objStr = clickedCell.classList[0];
-	//console.log("objStr: " + objStr);
 	if(objStr.length === 9) {
 		var objIndex = objStr.charAt(7);
 	}
 	else {
 		var objIndex = objStr.charAt(7)+objStr.charAt(8);
 	}
-	//console.log("objIndex: " + objIndex);
 	return pieces[objIndex];
 }
 
@@ -60,6 +56,35 @@ function showMoves(piece) {
 	}
 }
 
+function screenforCheck(team) {
+	console.log("screening for check");
+	//returns true if one of the captureOptions for
+	// a piece on the opposing team is the cell containing team's king
+	// 1. get an array of cells containing opposing team's pieces
+	//		(for each cell, see if there is a piece in it
+	//			then see if it is a piece for the opposing team
+	//				if so, add it to the array of cells)
+	//						-OR-
+	//		(for each piece in the array of pieces,
+	//			if the piece is on the opposing team && currRow != -1
+	//			add that piece to the array)
+	//	2. iterate through this array of active opposing pieces
+	//		and run the displayOptions function
+	return false;
+}
+
+function screenForCheckMate(team) {
+	return false;
+}
+
+function reverseMove() {
+	console.log("reversing move");
+}
+
+function displayWinScreen(team) {
+	console.log(team+" won the game!");
+}
+
 function movePiece(targetRow, targetCol) {
 	clearOptions();
 	console.log("moving the "+objAtBat.team, objAtBat.piece+" from ["+objAtBat.currRow+"]["+objAtBat.currCol+"] to ["+targetRow+"]["+targetCol+"]");
@@ -78,17 +103,41 @@ function movePiece(targetRow, targetCol) {
 		enemy.currCol = -1;
 		console.log(enemy);
 	}
-	//var debughelper2 = typeof targetRow;
-	//console.log("inside the movePiece function, targetRow is stored as: "+debughelper2);
 	objAtBat.currRow = targetRow; //update the current position
 	objAtBat.currCol = targetCol;
 	console.log("this piece's new currRow:"+ objAtBat.currRow);
 	console.log("this piece's new currCol:"+ objAtBat.currCol);
+	var stencilInCheck = screenforCheck("stencil");
+	var stencilInCheckMate = screenForCheckMate("stencil");
+	var sillouhetteInCheck = screenforCheck("sillouhette");
+	var sillouhetteInCheckMate = screenForCheckMate("sillouhette");
 	if(playerUp === "stencil") {
-		playerUp = "sillouhette";
+		if(stencilInCheck) {
+			reverseMove();
+		}
+		else if (sillouhetteInCheck && sillouhetteInCheckMate) {
+			displayWinScreen("stencil");
+		}
+		else if (sillouhetteInCheck) {
+			console.log("sillouhette is in check!");
+		}
+		else {
+			playerUp = "sillouhette";
+		}
 	}
 	else {
-		playerUp = "stencil";
+		if(sillouhetteInCheck) {
+			reverseMove();
+		}
+		else if (stencilInCheck && stencilInCheckMate) {
+			displayWinScreen("sillouhette");
+		}
+		else if (stencilInCheck) {
+			console.log("stencil is in check!");
+		}
+		else {
+			playerUp = "stencil";
+		}
 	}
 }
 
@@ -96,19 +145,23 @@ function clearOptions() {
 	var divs = document.getElementsByTagName("div");
 	for(var i=0; i<divs.length; i++) {
 		divs[i].classList.replace("option", "empty");
-		divs[i].classList.remove("captureOption")
+		divs[i].classList.remove("captureOption");
+		//divs[i].classList.remove("checkCondition");
 	}
 }
 
 function checkCaptures(i,j) {
 	if(i>=0 && i<8 && j>=0 && j<8 && !cells[i][j].classList.contains("empty")) {
 		mysteryObj = getPieceObject(cells[i][j]);
+		console.log(mysteryObj.piece);
 		if(mysteryObj.team !== objAtBat.team) {
 			cells[i][j].classList.add("captureOption");
+			if (mysteryObj.piece === "king") {
+				cells[i][j].classList.add("kingCaptureOption");
+			}
 		}
 	}
 }
-
 
 document.addEventListener("DOMContentLoaded", function(){
 	setUpCells();
@@ -116,25 +169,20 @@ document.addEventListener("DOMContentLoaded", function(){
 	for(var i=0; i<cells.length; i++) {
 		for(var j=0; j<cells[i].length; j++) {
 			cells[i][j].addEventListener("click", function(event) {
-				console.log("playerUp:"+playerUp);
-				console.log(this);
+				//console.log("playerUp:"+playerUp);
+				//console.log(this);
 				if(this.classList[0] !== "empty" && this.classList[0] !== "option" && !this.classList.contains("captureOption")) {
-					//console.log("entering first if statement");
 					if (playerUp !== getPieceObject(this).team) {
 						console.log("you can only play your own pieces");
 					}
 					else { 
 						objAtBat = getPieceObject(this);
 						showMoves(objAtBat);
-						console.log("debugg: "+objAtBat.team, objAtBat.piece);
 					}
 				}
 				else if (this.classList[0] === "option" || this.classList.contains("captureOption")) {
-					// var targetRow = this.classList[1][3];
-					// var targetCol = this.classList[2][3];
 					var targetRow = parseInt(this.classList[1][3]);
 					var targetCol = parseInt(this.classList[2][3]);
-					//console.log("targetRow: "+ targetRow);
 					movePiece(targetRow, targetCol);
 				}
 				else {

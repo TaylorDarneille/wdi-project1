@@ -134,11 +134,8 @@ function displayKnightMoves(piece) {
 	for(var k=0; k<options.length; k++) {
 		var m = i+options[k][0];
 		var n = j+options[k][1];
-		//var debughelper = typeof m;
-		//console.log(debughelper);
 		if(m>=0 && m<8 && n>=0 && n<8 && cells[m][n].classList.contains("empty")) {
 			cells[m][n].classList.replace("empty", "option");
-			//console.log("replacing cells[" + m + "][" +n + "] empty to option");
 		}
 		else if (m>=0 && m<8 && n>=0 && n<8){
 			mysteryObj = getPieceObject(cells[m][n]);

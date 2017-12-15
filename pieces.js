@@ -1,5 +1,3 @@
-//Moves are written as follows [currRow+this, currCol+this]
-
 var pieces = [
 {
 	piece: "rook",
@@ -16,7 +14,6 @@ var pieces = [
 	currCol: 7
 },
 {
-	//rook sillouhette
 	piece: "rook",
 	team: "sillouhette",
 	code: "\u265C",
@@ -24,7 +21,6 @@ var pieces = [
 	currCol: 0
 },
 {
-	//rook sillouhette #2
 	piece: "rook",
 	team: "sillouhette",
 	code: "\u265C",
