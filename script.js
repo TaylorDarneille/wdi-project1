@@ -2,6 +2,7 @@ var cells = [];
 var playerUp = "stencil";
 var objAtBat;
 var mysteryObj;
+var divs = document.getElementsByTagName("div");
 
 function setUpCells() {
 	for(var i=0; i<8; i++) {
@@ -19,7 +20,6 @@ function loadBoard() {
 }
 
 function getPieceObject(clickedCell) {
-	//console.log("clickedCell: "+clickedCell.classList[1]);
 	var objStr = clickedCell.classList[0];
 	if(objStr.length === 9) {
 		var objIndex = objStr.charAt(7);
@@ -73,17 +73,13 @@ function screenforCheck(opposingTeam) {
 		if(pieces[i].team===opposingTeam && pieces[i].currRow !== -1) {
 			//offenders.push(pieces[i]);
 			showMoves(pieces[i]);
+
 		}
 		clearOptions();
 	}
-	//console.log(offenders.length);
-	//	2. iterate through this array of active opposing pieces
-	//		and run the showMoves function
-	//	3. if there is a 
+	var checkThreatCells = document.getElementsByClassName("kingCaptureOption");
+	console.log("checkThreatCells: "+checkThreatCells.length);
 	return false;
-
-	// collect pathways from while loop leading up to the checkCapture function,
-	// then if checkCapture ADDS "kingCaptureOption", then that is your check pathway
 }
 
 function screenForCheckMate(team) {
@@ -156,11 +152,9 @@ function movePiece(targetRow, targetCol) {
 }
 
 function clearOptions() {
-	var divs = document.getElementsByTagName("div");
 	for(var i=0; i<divs.length; i++) {
 		divs[i].classList.replace("option", "empty");
 		divs[i].classList.remove("captureOption");
-		//divs[i].classList.remove("kingCaptureOption");
 	}
 }
 
@@ -176,7 +170,10 @@ document.addEventListener("DOMContentLoaded", function(){
 					if (playerUp !== getPieceObject(this).team) {
 						console.log("you can only play your own pieces");
 					}
-					else { 
+					else {
+						for(div of divs) {
+							div.classList.remove("kingCaptureOption");
+						}
 						objAtBat = getPieceObject(this);
 						showMoves(objAtBat);
 					}
