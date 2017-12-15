@@ -33,22 +33,28 @@ function getPieceObject(clickedCell) {
 function showMoves(piece) {
 	switch (piece.piece) {
 		case "rook":
+			console.log("displaying rook moves");
 			displayLinearMoves(piece);
 			break;
 		case "knight":
+			console.log("displaying knight moves");
 			displayKnightMoves(piece);
 			break;
 		case "bishop":
+			console.log("displaying bishop moves");
 			displayDiagonalMoves(piece);
 			break;
 		case "queen":
+			console.log("displaying queen moves");
 			displayLinearMoves(piece);
 			displayDiagonalMoves(piece);
 			break;
 		case "king":
+			console.log("displaying king moves");
 			displayKingMoves(piece);
 			break;
 		case "pawn":
+			console.log("displaying pawn moves");
 			displayPawnMoves(piece);
 			break;
 		default:
@@ -62,19 +68,22 @@ function screenforCheck(opposingTeam) {
 	// a piece on the opposing team is the cell containing team's king
 	// 1. for each piece in the array of pieces, if the piece is on 
 	//		the opposing team && currRow != -1, run showMoves;
-	// var offenders = [];
-	// for(var i=0; i<pieces.length; i++) {
-	// 	if(pieces[i].team===opposingTeam && pieces[i].currRow !== -1) {
-	// 		//offenders.push(pieces[i]);
-	// 		showMoves(pieces[i]);
-	// 	}
-	// 	clearOptions();
-	// }
+	var offenders = [];
+	for(var i=0; i<pieces.length; i++) {
+		if(pieces[i].team===opposingTeam && pieces[i].currRow !== -1) {
+			//offenders.push(pieces[i]);
+			showMoves(pieces[i]);
+		}
+		clearOptions();
+	}
 	//console.log(offenders.length);
 	//	2. iterate through this array of active opposing pieces
 	//		and run the showMoves function
 	//	3. if there is a 
 	return false;
+
+	// collect pathways from while loop leading up to the checkCapture function,
+	// then if checkCapture ADDS "kingCaptureOption", then that is your check pathway
 }
 
 function screenForCheckMate(team) {
@@ -97,6 +106,7 @@ function movePiece(targetRow, targetCol) {
 	cells[objAtBat.currRow][objAtBat.currCol].classList.replace("pieces["+pieces.indexOf(objAtBat)+"]", "empty"); // replace the piece[i] class with the empty class
 	if (cells[targetRow][targetCol].classList.contains("empty")){
 		cells[targetRow][targetCol].classList.replace("empty", "pieces["+pieces.indexOf(objAtBat)+"]"); // add the piece[i] class to the target cell
+		cells[targetRow][targetCol].classList.add(objAtBat.team);
 	}
 	else {
 		var enemy = getPieceObject(cells[targetRow][targetCol]);
