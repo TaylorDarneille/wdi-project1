@@ -19,7 +19,7 @@ function loadBoard() {
 }
 
 function getPieceObject(clickedCell) {
-	console.log("clickedCell: "+clickedCell.classList[1]);
+	//console.log("clickedCell: "+clickedCell.classList[1]);
 	var objStr = clickedCell.classList[0];
 	if(objStr.length === 9) {
 		var objIndex = objStr.charAt(7);
@@ -56,20 +56,24 @@ function showMoves(piece) {
 	}
 }
 
-function screenforCheck(team) {
+function screenforCheck(opposingTeam) {
 	console.log("screening for check");
 	//returns true if one of the captureOptions for
 	// a piece on the opposing team is the cell containing team's king
-	// 1. get an array of cells containing opposing team's pieces
-	//		(for each cell, see if there is a piece in it
-	//			then see if it is a piece for the opposing team
-	//				if so, add it to the array of cells)
-	//						-OR-
-	//		(for each piece in the array of pieces,
-	//			if the piece is on the opposing team && currRow != -1
-	//			add that piece to the array)
+	// 1. for each piece in the array of pieces, if the piece is on 
+	//		the opposing team && currRow != -1, run showMoves;
+	// var offenders = [];
+	// for(var i=0; i<pieces.length; i++) {
+	// 	if(pieces[i].team===opposingTeam && pieces[i].currRow !== -1) {
+	// 		//offenders.push(pieces[i]);
+	// 		showMoves(pieces[i]);
+	// 	}
+	// 	clearOptions();
+	// }
+	//console.log(offenders.length);
 	//	2. iterate through this array of active opposing pieces
-	//		and run the displayOptions function
+	//		and run the showMoves function
+	//	3. if there is a 
 	return false;
 }
 
@@ -87,7 +91,7 @@ function displayWinScreen(team) {
 
 function movePiece(targetRow, targetCol) {
 	clearOptions();
-	console.log("moving the "+objAtBat.team, objAtBat.piece+" from ["+objAtBat.currRow+"]["+objAtBat.currCol+"] to ["+targetRow+"]["+targetCol+"]");
+	//console.log("moving the "+objAtBat.team, objAtBat.piece+" from ["+objAtBat.currRow+"]["+objAtBat.currCol+"] to ["+targetRow+"]["+targetCol+"]");
 	cells[objAtBat.currRow][objAtBat.currCol].textContent = ""; //remove unicode from starting cell
 	cells[targetRow][targetCol].textContent = objAtBat.code; //add unicode to target cell
 	cells[objAtBat.currRow][objAtBat.currCol].classList.replace("pieces["+pieces.indexOf(objAtBat)+"]", "empty"); // replace the piece[i] class with the empty class
@@ -97,19 +101,19 @@ function movePiece(targetRow, targetCol) {
 	else {
 		var enemy = getPieceObject(cells[targetRow][targetCol]);
 		var capturedClass = cells[targetRow][targetCol].classList[0];
-		console.log("capturedClass:"+capturedClass);
+		//console.log("capturedClass:"+capturedClass);
 		cells[targetRow][targetCol].classList.replace(capturedClass, "pieces["+pieces.indexOf(objAtBat)+"]");
 		enemy.currRow = -1;
 		enemy.currCol = -1;
-		console.log(enemy);
+		//console.log(enemy);
 	}
 	objAtBat.currRow = targetRow; //update the current position
 	objAtBat.currCol = targetCol;
-	console.log("this piece's new currRow:"+ objAtBat.currRow);
-	console.log("this piece's new currCol:"+ objAtBat.currCol);
-	var stencilInCheck = screenforCheck("stencil");
+	//console.log("this piece's new currRow:"+ objAtBat.currRow);
+	//console.log("this piece's new currCol:"+ objAtBat.currCol);
+	var stencilInCheck = screenforCheck("sillouhette");
 	var stencilInCheckMate = screenForCheckMate("stencil");
-	var sillouhetteInCheck = screenforCheck("sillouhette");
+	var sillouhetteInCheck = screenforCheck("stencil");
 	var sillouhetteInCheckMate = screenForCheckMate("sillouhette");
 	if(playerUp === "stencil") {
 		if(stencilInCheck) {
@@ -146,20 +150,7 @@ function clearOptions() {
 	for(var i=0; i<divs.length; i++) {
 		divs[i].classList.replace("option", "empty");
 		divs[i].classList.remove("captureOption");
-		//divs[i].classList.remove("checkCondition");
-	}
-}
-
-function checkCaptures(i,j) {
-	if(i>=0 && i<8 && j>=0 && j<8 && !cells[i][j].classList.contains("empty")) {
-		mysteryObj = getPieceObject(cells[i][j]);
-		console.log(mysteryObj.piece);
-		if(mysteryObj.team !== objAtBat.team) {
-			cells[i][j].classList.add("captureOption");
-			if (mysteryObj.piece === "king") {
-				cells[i][j].classList.add("kingCaptureOption");
-			}
-		}
+		//divs[i].classList.remove("kingCaptureOption");
 	}
 }
 

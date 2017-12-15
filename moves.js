@@ -1,7 +1,20 @@
+function checkCaptures(i,j) {
+	if(i>=0 && i<8 && j>=0 && j<8 && !cells[i][j].classList.contains("empty")) {
+		mysteryObj = getPieceObject(cells[i][j]);
+		//console.log(mysteryObj.piece);
+		if(mysteryObj.team !== playerUp) {
+			cells[i][j].classList.add("captureOption");
+			if (mysteryObj.piece === "king") {
+				cells[i][j].classList.add("kingCaptureOption");
+			}
+		}
+	}
+}
+
 function displayLinearMoves(piece) {
 	var i = piece.currRow;
 	var j = piece.currCol;
-	console.log("i: "+i+" j: "+j);
+	//console.log("i: "+i+" j: "+j);
 	//down direction
 	i++;
 	while(i>=0 && i<8 && j>=0 && j<8 && cells[i][j].classList.contains("empty")) {
@@ -81,11 +94,11 @@ function displayPawnMoves(piece) {
 	var optionsArr = [];
 	var captureOptionsArr = [];
 	if(piece.team === "stencil") {
-		console.log("enterring first if-statment");
 		if(i===1) {
-			optionsArr.push({i: i+2, j: j+2}); //can move two spaces down
+			console.log("enterring first if-statment");
+			optionsArr.push({i: i+2, j: j}); //can move two spaces down
 		}
-			optionsArr.push({i: i+1, j: j+2}); //can move one space down
+			optionsArr.push({i: i+1, j: j}); //can move one space down
 			captureOptionsArr.push({i: i+1, j: j-1}); //check captures for down left
 			captureOptionsArr.push({i: i+1, j: j+1}); //check captures for and down right
 	}
@@ -97,8 +110,12 @@ function displayPawnMoves(piece) {
 		captureOptionsArr.push({i: i-1, j: j-1}); //check captures for up left
 		captureOptionsArr.push({i: i-1, j: j+1}); //check captures for up right
 	}
-	console.log("optionsArr: "+ optionsArr);
-	console.log("captureOptionsArr: " + captureOptionsArr);
+
+	for(var t=0; t<optionsArr.length; t++) {
+		console.log("optionsArr["+t+"]:"+optionsArr[0].i+","+optionsArr[0].j);
+		console.log("optionsArr["+t+"]:"+optionsArr[0].i+","+optionsArr[0].j);
+	}
+	
 	for(var k=0; k<optionsArr.length; k++) {
 		var m = optionsArr[k].i;
 		var n = optionsArr[k].j;
@@ -111,8 +128,11 @@ function displayPawnMoves(piece) {
 		n = captureOptionsArr[k].j;
 		if(m>=0 && m<8 && n>=0 && n<8 && !cells[m][n].classList.contains("empty")) {
 			mysteryObj = getPieceObject(cells[m][n]);
-			if(mysteryObj.team !== objAtBat.team) {
+			if(mysteryObj.team !== playerUp) {
 				cells[m][n].classList.add("captureOption");
+				if (mysteryObj.piece === "king") {
+					cells[m][n].classList.add("kingCaptureOption");
+				}
 			}
 		}
 	}
@@ -121,8 +141,8 @@ function displayPawnMoves(piece) {
 function displayKnightMoves(piece) {
 	var i = piece.currRow;
 	var j = piece.currCol;
-	console.log("currRow: "+i);
-	console.log("currCol: "+j);
+	//console.log("currRow: "+i);
+	//console.log("currCol: "+j);
 	var options = [[-2,-1],
 					[-2,1],
 					[2,-1],
@@ -139,8 +159,11 @@ function displayKnightMoves(piece) {
 		}
 		else if (m>=0 && m<8 && n>=0 && n<8){
 			mysteryObj = getPieceObject(cells[m][n]);
-			if(mysteryObj.team !== objAtBat.team) {
+			if(mysteryObj.team !== playerUp) {
 				cells[m][n].classList.add("captureOption");
+				if (mysteryObj.piece === "king") {
+					cells[m][n].classList.add("kingCaptureOption");
+				}
 			}
 		}
 	}
@@ -165,8 +188,11 @@ function displayKingMoves(piece) {
 		}
 		else if (m>=0 && m<8 && n>=0 && n<8){
 			mysteryObj = getPieceObject(cells[m][n]);
-			if(mysteryObj.team !== objAtBat.team) {
+			if(mysteryObj.team !== playerUp) {
 				cells[m][n].classList.add("captureOption");
+				if (mysteryObj.piece === "king") {
+					cells[m][n].classList.add("kingCaptureOption");
+				}
 			}
 		}
 	}
