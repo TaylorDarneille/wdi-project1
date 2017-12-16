@@ -1,3 +1,5 @@
+var destructionPath = [];
+
 function checkCaptures(attackingPiece, i,j) {
 	if(i>=0 && i<8 && j>=0 && j<8 && !cells[i][j].classList.contains("empty")) {
 		mysteryObj = getPieceObject(cells[i][j]);
@@ -6,19 +8,24 @@ function checkCaptures(attackingPiece, i,j) {
 			cells[i][j].classList.add("captureOption");
 			if (mysteryObj.piece === "king") {
 				cells[attackingPiece.currRow][attackingPiece.currCol].classList.add("kingCaptureOption");
+				cells[i][j].classList.add("endangered-king");
+				for(indexObj of destructionPath) {
+					cells[indexObj.i][indexObj.j].classList.add("destruction-path");
+				}
 			}
 		}
 	}
+	destructionPath = [];
 }
 
 function displayLinearMoves(piece) {
 	var i = piece.currRow;
 	var j = piece.currCol;
-	//console.log("i: "+i+" j: "+j);
 	//down direction
 	i++;
 	while(i>=0 && i<8 && j>=0 && j<8 && cells[i][j].classList.contains("empty")) {
 		cells[i][j].classList.replace("empty", "option");
+		destructionPath.push({i: i, j: j});
 		i++;
 	}
 	checkCaptures(piece, i, j);
@@ -27,6 +34,7 @@ function displayLinearMoves(piece) {
 	j++;
 	while(i>=0 && i<8 && j>=0 && j<8 && cells[i][j].classList.contains("empty")) {
 		cells[i][j].classList.replace("empty", "option");
+		destructionPath.push({i: i, j: j});
 		j++;
 	}
 	checkCaptures(piece, i, j);
@@ -35,6 +43,7 @@ function displayLinearMoves(piece) {
 	j = piece.currCol;
 	while(i>=0 && i<8 && j>=0 && j<8 && cells[i][j].classList.contains("empty")) {
 		cells[i][j].classList.replace("empty", "option");
+		destructionPath.push({i: i, j: j});
 		i--;
 	}
 	checkCaptures(piece, i, j);
@@ -43,6 +52,7 @@ function displayLinearMoves(piece) {
 	j--;
 	while(i>=0 && i<8 && j>=0 && j<8 && cells[i][j].classList.contains("empty")) {
 		cells[i][j].classList.replace("empty", "option");
+		destructionPath.push({i: i, j: j});
 		j--;
 	}
 	checkCaptures(piece, i, j);
@@ -54,6 +64,7 @@ function displayDiagonalMoves(piece) {
 	var j = piece.currCol+1;
 	while(i>=0 && i<8 && j>=0 && j<8 && cells[i][j].classList.contains("empty")) {
 		cells[i][j].classList.replace("empty", "option");
+		destructionPath.push({i: i, j: j});
 		i++;
 		j++;
 	}
@@ -63,6 +74,7 @@ function displayDiagonalMoves(piece) {
 	j = piece.currCol+1;
 	while(i>=0 && i<8 && j>=0 && j<8 && cells[i][j].classList.contains("empty")) {
 		cells[i][j].classList.replace("empty", "option");
+		destructionPath.push({i: i, j: j});
 		i--;
 		j++;
 	}
@@ -72,6 +84,7 @@ function displayDiagonalMoves(piece) {
 	j = piece.currCol-1;
 	while(i>=0 && i<8 && j>=0 && j<8 && cells[i][j].classList.contains("empty")) {
 		cells[i][j].classList.replace("empty", "option");
+		destructionPath.push({i: i, j: j});
 		i--;
 		j--;
 	}
@@ -81,6 +94,7 @@ function displayDiagonalMoves(piece) {
 	j = piece.currCol-1;
 	while(i>=0 && i<8 && j>=0 && j<8 && cells[i][j].classList.contains("empty")) {
 		cells[i][j].classList.replace("empty", "option");
+		destructionPath.push({i: i, j: j});
 		i++;
 		j--;
 	}
@@ -131,6 +145,7 @@ function displayPawnMoves(piece) {
 				cells[m][n].classList.add("captureOption");
 				if (mysteryObj.piece === "king") {
 					cells[piece.currRow][piece.currCol].classList.add("kingCaptureOption");
+					cells[m][n].classList.add("endangered-king");
 				}
 			}
 		}
@@ -162,6 +177,7 @@ function displayKnightMoves(piece) {
 				cells[m][n].classList.add("captureOption");
 				if (mysteryObj.piece === "king") {
 					cells[piece.currRow][piece.currCol].classList.add("kingCaptureOption");
+					cells[m][n].classList.add("endangered-king");
 				}
 			}
 		}
@@ -191,6 +207,7 @@ function displayKingMoves(piece) {
 				cells[m][n].classList.add("captureOption");
 				if (mysteryObj.piece === "king") {
 					cells[piece.currRow][piece.currCol].classList.add("kingCaptureOption");
+					cells[m][n].classList.add("endangered-king");
 				}
 			}
 		}

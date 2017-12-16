@@ -16,6 +16,18 @@ function loadBoard() {
 		var piece = pieces[i];
 		cells[piece.currRow][piece.currCol].textContent = piece.code;
 		cells[piece.currRow][piece.currCol].classList.replace("empty", "pieces["+i+"]");
+		cells[piece.currRow][piece.currCol].classList.add(piece.team);
+	}
+}
+
+function changePlayerUp() {
+	if(playerUp==="stencil") {
+		document.getElementById("player-up").textContent = "SILLOUHETTE";
+		playerUp = "sillouhette";
+	}
+	else {
+		document.getElementById("player-up").textContent = "STENCIL";
+		playerUp = "stencil";
 	}
 }
 
@@ -33,28 +45,28 @@ function getPieceObject(clickedCell) {
 function showMoves(piece) {
 	switch (piece.piece) {
 		case "rook":
-			console.log("displaying rook moves");
+			// console.log("displaying rook moves");
 			displayLinearMoves(piece);
 			break;
 		case "knight":
-			console.log("displaying knight moves");
+			// console.log("displaying knight moves");
 			displayKnightMoves(piece);
 			break;
 		case "bishop":
-			console.log("displaying bishop moves");
+			// console.log("displaying bishop moves");
 			displayDiagonalMoves(piece);
 			break;
 		case "queen":
-			console.log("displaying queen moves");
+			// console.log("displaying queen moves");
 			displayLinearMoves(piece);
 			displayDiagonalMoves(piece);
 			break;
 		case "king":
-			console.log("displaying king moves");
+			// console.log("displaying king moves");
 			displayKingMoves(piece);
 			break;
 		case "pawn":
-			console.log("displaying pawn moves");
+			// console.log("displaying pawn moves");
 			displayPawnMoves(piece);
 			break;
 		default:
@@ -62,24 +74,20 @@ function showMoves(piece) {
 	}
 }
 
-function screenforCheck(opposingTeam) {
-	console.log("screening for check");
-	//returns true if one of the captureOptions for
-	// a piece on the opposing team is the cell containing team's king
-	// 1. for each piece in the array of pieces, if the piece is on 
-	//		the opposing team && currRow != -1, run showMoves;
-	var offenders = [];
+function screenforCheck(opposingTeam) { 
 	for(var i=0; i<pieces.length; i++) {
 		if(pieces[i].team===opposingTeam && pieces[i].currRow !== -1) {
-			//offenders.push(pieces[i]);
 			showMoves(pieces[i]);
-
 		}
 		clearOptions();
 	}
-	var checkThreatCells = document.getElementsByClassName("kingCaptureOption");
-	console.log("checkThreatCells: "+checkThreatCells.length);
-	return false;
+	var checkThreatCells = document.getElementsByClassName(opposingTeam+" kingCaptureOption");
+	if (checkThreatCells.length>0) {
+		return true;
+	}
+	else {
+		return false;
+	}
 }
 
 function screenForCheckMate(team) {
@@ -96,33 +104,32 @@ function displayWinScreen(team) {
 
 function movePiece(targetRow, targetCol) {
 	clearOptions();
-	//console.log("moving the "+objAtBat.team, objAtBat.piece+" from ["+objAtBat.currRow+"]["+objAtBat.currCol+"] to ["+targetRow+"]["+targetCol+"]");
 	cells[objAtBat.currRow][objAtBat.currCol].textContent = ""; //remove unicode from starting cell
 	cells[targetRow][targetCol].textContent = objAtBat.code; //add unicode to target cell
 	cells[objAtBat.currRow][objAtBat.currCol].classList.replace("pieces["+pieces.indexOf(objAtBat)+"]", "empty"); // replace the piece[i] class with the empty class
 	if (cells[targetRow][targetCol].classList.contains("empty")){
 		cells[targetRow][targetCol].classList.replace("empty", "pieces["+pieces.indexOf(objAtBat)+"]"); // add the piece[i] class to the target cell
-		cells[targetRow][targetCol].classList.add(objAtBat.team);
+	// 	cells[targetRow][targetCol].classList.remove("stencil", "sillouhette");
+	// 	cells[targetRow][targetCol].classList.add(objAtBat.team);
 	}
 	else {
 		var enemy = getPieceObject(cells[targetRow][targetCol]);
 		var capturedClass = cells[targetRow][targetCol].classList[0];
-		//console.log("capturedClass:"+capturedClass);
 		cells[targetRow][targetCol].classList.replace(capturedClass, "pieces["+pieces.indexOf(objAtBat)+"]");
 		enemy.currRow = -1;
 		enemy.currCol = -1;
-		//console.log(enemy);
 	}
+	cells[targetRow][targetCol].classList.remove("stencil", "sillouhette");
+	cells[targetRow][targetCol].classList.add(objAtBat.team);
 	objAtBat.currRow = targetRow; //update the current position
 	objAtBat.currCol = targetCol;
-	//console.log("this piece's new currRow:"+ objAtBat.currRow);
-	//console.log("this piece's new currCol:"+ objAtBat.currCol);
 	var stencilInCheck = screenforCheck("sillouhette");
 	var stencilInCheckMate = screenForCheckMate("stencil");
 	var sillouhetteInCheck = screenforCheck("stencil");
 	var sillouhetteInCheckMate = screenForCheckMate("sillouhette");
 	if(playerUp === "stencil") {
 		if(stencilInCheck) {
+			console.log("playerup: "+playerUp+" and stencil is in check");
 			reverseMove();
 		}
 		else if (sillouhetteInCheck && sillouhetteInCheckMate) {
@@ -130,13 +137,16 @@ function movePiece(targetRow, targetCol) {
 		}
 		else if (sillouhetteInCheck) {
 			console.log("sillouhette is in check!");
+			changePlayerUp();
+
 		}
 		else {
-			playerUp = "sillouhette";
+			changePlayerUp();
 		}
 	}
 	else {
 		if(sillouhetteInCheck) {
+			console.log("playerup: "+playerUp+" and sillouhette is in check");
 			reverseMove();
 		}
 		else if (stencilInCheck && stencilInCheckMate) {
@@ -144,9 +154,10 @@ function movePiece(targetRow, targetCol) {
 		}
 		else if (stencilInCheck) {
 			console.log("stencil is in check!");
+			changePlayerUp();
 		}
 		else {
-			playerUp = "stencil";
+			changePlayerUp();
 		}
 	}
 }
@@ -158,22 +169,24 @@ function clearOptions() {
 	}
 }
 
+function clearCheckClasses() {
+	for(div of divs) {
+		div.classList.remove("kingCaptureOption", "destruction-path", "endangered-king");
+	}
+}
+
 document.addEventListener("DOMContentLoaded", function(){
 	setUpCells();
 	loadBoard();
 	for(var i=0; i<cells.length; i++) {
 		for(var j=0; j<cells[i].length; j++) {
 			cells[i][j].addEventListener("click", function(event) {
-				//console.log("playerUp:"+playerUp);
-				//console.log(this);
+				clearCheckClasses();
 				if(this.classList[0] !== "empty" && this.classList[0] !== "option" && !this.classList.contains("captureOption")) {
 					if (playerUp !== getPieceObject(this).team) {
 						console.log("you can only play your own pieces");
 					}
 					else {
-						for(div of divs) {
-							div.classList.remove("kingCaptureOption");
-						}
 						objAtBat = getPieceObject(this);
 						showMoves(objAtBat);
 					}
@@ -186,8 +199,7 @@ document.addEventListener("DOMContentLoaded", function(){
 				else {
 					console.log("empty");
 				}
-			}
-			)
+			})
 		}
 	}
 });

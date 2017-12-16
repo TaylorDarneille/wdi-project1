@@ -11,13 +11,13 @@ body {
 }
 .grid>div {
   border: solid black 1px;
+  font-size: 6vw;
 }
 .dark {
-  background: black;
-  color: white;
+  background: #006400;
 }
 .light {
-	background: grey;
+	background: #99c199;
 }
 .option {
 	background: chartreuse;
@@ -29,11 +29,15 @@ body {
 	
 }
 .stencil{
-	color: red;
+	color: black;
+  font-weight: 800;
 }
 .sillouhette{
-	color: green;
+	color: white;
 }
-.kingCaptureOption {
+.kingCaptureOption, .endangered-king {
   background: orange;
+}
+.destruction-path {
+  background: yellow;
 }
