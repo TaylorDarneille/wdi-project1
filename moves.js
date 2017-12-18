@@ -3,7 +3,6 @@ var destructionPath = [];
 function checkCaptures(attackingPiece, i,j) {
 	if(i>=0 && i<8 && j>=0 && j<8 && !cells[i][j].classList.contains("empty")) {
 		mysteryObj = getPieceObject(cells[i][j]);
-		//console.log(mysteryObj.piece);
 		if(mysteryObj.team !== attackingPiece.team) {
 			cells[i][j].classList.add("captureOption");
 			if (mysteryObj.piece === "king") {
@@ -122,13 +121,7 @@ function displayPawnMoves(piece) {
 		optionsArr.push({i: i-1, j: j}); //can move one space up
 		captureOptionsArr.push({i: i-1, j: j-1}); //check captures for up left
 		captureOptionsArr.push({i: i-1, j: j+1}); //check captures for up right
-	}
-
-	// for(var t=0; t<optionsArr.length; t++) {
-	// 	console.log("optionsArr["+t+"]:"+optionsArr[0].i+","+optionsArr[0].j);
-	// 	console.log("optionsArr["+t+"]:"+optionsArr[0].i+","+optionsArr[0].j);
-	// }
-	
+	}	
 	for(var k=0; k<optionsArr.length; k++) {
 		var m = optionsArr[k].i;
 		var n = optionsArr[k].j;
@@ -155,8 +148,6 @@ function displayPawnMoves(piece) {
 function displayKnightMoves(piece) {
 	var i = piece.currRow;
 	var j = piece.currCol;
-	//console.log("currRow: "+i);
-	//console.log("currCol: "+j);
 	var options = [[-2,-1],
 					[-2,1],
 					[2,-1],

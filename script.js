@@ -3,7 +3,11 @@ var playerUp = "stencil";
 var objAtBat;
 var mysteryObj;
 var divs = document.getElementsByTagName("div");
+var targetRow, targetCol;
 
+// setUpCells():
+//		uses for-loop to populate 2d cells array so cell divs
+//		can be accessed by cells[row][column]
 function setUpCells() {
 	for(var i=0; i<8; i++) {
 		var row = document.getElementsByClassName("row"+i);
@@ -11,26 +15,40 @@ function setUpCells() {
 	}
 }
 
+// loadBoard():
+// 		runs through pieces array and uses each object's
+//		currRow/currCol keys to place them in their starting
+//		position (writes unicode to the divs and adds pieces[index] class)
 function loadBoard() {
 	for(var i=0; i<pieces.length; i++) {
 		var piece = pieces[i];
-		cells[piece.currRow][piece.currCol].textContent = piece.code;
-		cells[piece.currRow][piece.currCol].classList.replace("empty", "pieces["+i+"]");
-		cells[piece.currRow][piece.currCol].classList.add(piece.team);
+		cells[piece.initRow][piece.initCol].textContent = piece.code;
+		cells[piece.initRow][piece.initCol].classList.replace("empty", "pieces["+i+"]");
+		cells[piece.initRow][piece.initCol].classList.add(piece.team);
 	}
 }
 
-function changePlayerUp() {
-	if(playerUp==="stencil") {
-		document.getElementById("player-up").textContent = "SILLOUHETTE";
-		playerUp = "sillouhette";
-	}
-	else {
-		document.getElementById("player-up").textContent = "STENCIL";
-		playerUp = "stencil";
+function clearBoard() {
+	for(var i=0; i<cells.length; i++) {
+		for(var j=0; j<cells[i].length; j++) {
+			if(cells[i][j].classList[0] !== "empty") {
+				if(playerUp === "sillouhette") {
+					changePlayerUp();
+				}
+				var misplacedPiece = getPieceObject(cells[i][j]);
+				misplacedPiece.currRow = misplacedPiece.initRow;
+				misplacedPiece.currCol = misplacedPiece.initCol;
+				var firstClass = cells[i][j].classList[0];
+				cells[i][j].classList.replace(firstClass, "empty");
+				cells[i][j].textContent = "";
+			}
+		}
 	}
 }
 
+// getPieceObject():
+//		takes in a cell and returns the object whose
+//		current position is in that cell
 function getPieceObject(clickedCell) {
 	var objStr = clickedCell.classList[0];
 	if(objStr.length === 9) {
@@ -42,31 +60,29 @@ function getPieceObject(clickedCell) {
 	return pieces[objIndex];
 }
 
+// showMoves():
+// 		called when playerUp clicks the piece they want to move
+//		highlights all possible moves in green and alll possible
+//		captures in red
 function showMoves(piece) {
 	switch (piece.piece) {
 		case "rook":
-			// console.log("displaying rook moves");
 			displayLinearMoves(piece);
 			break;
 		case "knight":
-			// console.log("displaying knight moves");
 			displayKnightMoves(piece);
 			break;
 		case "bishop":
-			// console.log("displaying bishop moves");
 			displayDiagonalMoves(piece);
 			break;
 		case "queen":
-			// console.log("displaying queen moves");
 			displayLinearMoves(piece);
 			displayDiagonalMoves(piece);
 			break;
 		case "king":
-			// console.log("displaying king moves");
 			displayKingMoves(piece);
 			break;
 		case "pawn":
-			// console.log("displaying pawn moves");
 			displayPawnMoves(piece);
 			break;
 		default:
@@ -74,7 +90,72 @@ function showMoves(piece) {
 	}
 }
 
-function screenforCheck(opposingTeam) { 
+// movePiece():
+//		handles moves to empty squares as well as captures
+//		checkWinSwitchPlayers is called after piece is moved
+function movePiece(targetRow, targetCol) {
+	clearOptions();
+	cells[objAtBat.currRow][objAtBat.currCol].textContent = ""; //remove unicode from starting cell
+	cells[targetRow][targetCol].textContent = objAtBat.code; //add unicode to target cell
+	cells[objAtBat.currRow][objAtBat.currCol].classList.replace("pieces["+pieces.indexOf(objAtBat)+"]", "empty"); // replace the piece[i] class with the empty class
+	if (cells[targetRow][targetCol].classList.contains("empty")){
+		cells[targetRow][targetCol].classList.replace("empty", "pieces["+pieces.indexOf(objAtBat)+"]"); // add the piece[i] class to the target cell
+	}
+	else {
+		var enemy = getPieceObject(cells[targetRow][targetCol]);
+		var capturedClass = cells[targetRow][targetCol].classList[0];
+		cells[targetRow][targetCol].classList.replace(capturedClass, "pieces["+pieces.indexOf(objAtBat)+"]");
+		enemy.currRow = -1;
+		enemy.currCol = -1;
+	}
+	cells[targetRow][targetCol].classList.remove("stencil", "sillouhette");
+	cells[targetRow][targetCol].classList.add(objAtBat.team);
+	objAtBat.currRow = targetRow; //update the current position
+	objAtBat.currCol = targetCol;
+	checkWinSwitchPlayers();
+}
+
+//cheWinSwitchPlayers:
+// executes AFTER each move by either player
+// displays in message board if either player is in check
+// reassigns playerUp
+
+function checkWinSwitchPlayers() {
+	var stencilInCheck = screenForCheck("sillouhette");
+	var sillouhetteInCheck = screenForCheck("stencil");
+	if(stencilInCheck) {
+		document.getElementById("quote").style.display = "none";
+		document.getElementById("stencil-check").style.display = "inline";
+	}
+	else if (sillouhetteInCheck) {
+		document.getElementById("quote").style.display = "none";
+		document.getElementById("sillouhette-check").style.display = "inline";
+	}
+	else {
+		document.getElementById("sillouhette-check").style.display = "none";
+		document.getElementById("stencil-check").style.display = "none";
+		document.getElementById("quote").style.display = "inline";
+	}
+	if (pieces[14].currRow===-1){
+		document.getElementById("quote").style.display = "none";
+		document.getElementById("stencil-win").style.display = "inline";
+	}
+	else if (pieces[15].currRow===-1) {
+		document.getElementById("quote").style.display = "none";
+		document.getElementById("sillouhette-win").style.display = "inline";
+	}
+	else {
+		changePlayerUp();
+	}
+	objAtBat = null;
+}
+
+// screenForCheck():
+//		runs showMoves() for each active piece on the opposing team
+//		checkThreatCells is an array of cells containing pieces that
+//		could capture a king on their next move
+//		returns true if checkThreatCells is non-empty, false otherwise
+function screenForCheck(opposingTeam) { 
 	for(var i=0; i<pieces.length; i++) {
 		if(pieces[i].team===opposingTeam && pieces[i].currRow !== -1) {
 			showMoves(pieces[i]);
@@ -90,114 +171,72 @@ function screenforCheck(opposingTeam) {
 	}
 }
 
-function screenForCheckMate(team) {
-	return false;
-}
-
-function reverseMove() {
-	console.log("reversing move");
-}
-
-function displayWinScreen(team) {
-	console.log(team+" won the game!");
-}
-
-function movePiece(targetRow, targetCol) {
-	clearOptions();
-	cells[objAtBat.currRow][objAtBat.currCol].textContent = ""; //remove unicode from starting cell
-	cells[targetRow][targetCol].textContent = objAtBat.code; //add unicode to target cell
-	cells[objAtBat.currRow][objAtBat.currCol].classList.replace("pieces["+pieces.indexOf(objAtBat)+"]", "empty"); // replace the piece[i] class with the empty class
-	if (cells[targetRow][targetCol].classList.contains("empty")){
-		cells[targetRow][targetCol].classList.replace("empty", "pieces["+pieces.indexOf(objAtBat)+"]"); // add the piece[i] class to the target cell
-	// 	cells[targetRow][targetCol].classList.remove("stencil", "sillouhette");
-	// 	cells[targetRow][targetCol].classList.add(objAtBat.team);
+// changePlayerUp():
+//		reassigns playerUp variable, changes display in control board
+function changePlayerUp() {
+	if(playerUp==="stencil") {
+		document.getElementById("player-up").textContent = "\u265A";
+		playerUp = "sillouhette";
 	}
 	else {
-		var enemy = getPieceObject(cells[targetRow][targetCol]);
-		var capturedClass = cells[targetRow][targetCol].classList[0];
-		cells[targetRow][targetCol].classList.replace(capturedClass, "pieces["+pieces.indexOf(objAtBat)+"]");
-		enemy.currRow = -1;
-		enemy.currCol = -1;
-	}
-	cells[targetRow][targetCol].classList.remove("stencil", "sillouhette");
-	cells[targetRow][targetCol].classList.add(objAtBat.team);
-	objAtBat.currRow = targetRow; //update the current position
-	objAtBat.currCol = targetCol;
-	var stencilInCheck = screenforCheck("sillouhette");
-	var stencilInCheckMate = screenForCheckMate("stencil");
-	var sillouhetteInCheck = screenforCheck("stencil");
-	var sillouhetteInCheckMate = screenForCheckMate("sillouhette");
-	if(playerUp === "stencil") {
-		if(stencilInCheck) {
-			console.log("playerup: "+playerUp+" and stencil is in check");
-			reverseMove();
-		}
-		else if (sillouhetteInCheck && sillouhetteInCheckMate) {
-			displayWinScreen("stencil");
-		}
-		else if (sillouhetteInCheck) {
-			console.log("sillouhette is in check!");
-			changePlayerUp();
-
-		}
-		else {
-			changePlayerUp();
-		}
-	}
-	else {
-		if(sillouhetteInCheck) {
-			console.log("playerup: "+playerUp+" and sillouhette is in check");
-			reverseMove();
-		}
-		else if (stencilInCheck && stencilInCheckMate) {
-			displayWinScreen("sillouhette");
-		}
-		else if (stencilInCheck) {
-			console.log("stencil is in check!");
-			changePlayerUp();
-		}
-		else {
-			changePlayerUp();
-		}
+		document.getElementById("player-up").textContent = "\u2654";
+		playerUp = "stencil";
 	}
 }
 
+// clearOptions():
+//		removes classes from cells that were added by showMoves()
 function clearOptions() {
 	for(var i=0; i<divs.length; i++) {
 		divs[i].classList.replace("option", "empty");
 		divs[i].classList.remove("captureOption");
 	}
 }
-
+//clearCheckClasses()
+//		removes classes from cells that were added by showMoves()
+//		to indicate check-related cells
 function clearCheckClasses() {
 	for(div of divs) {
 		div.classList.remove("kingCaptureOption", "destruction-path", "endangered-king");
 	}
 }
+//resetGame()
+//	calls helper functions to reset the cells and current
+//	positions of the pieces
+var resetGame = function() {
+	clearOptions();
+	clearCheckClasses();
+	clearBoard();
+	loadBoard();
+}
 
+//This is where the game happens. First setUpCells() and loadBoard()
+// along with an event listener for the reset button set the stage for play.
+//	Then nested for-loops iteralte through the cells array, adding an
+//	event listener to each cell. 
 document.addEventListener("DOMContentLoaded", function(){
 	setUpCells();
 	loadBoard();
+	document.getElementsByTagName("button")[0].addEventListener("click", resetGame);
 	for(var i=0; i<cells.length; i++) {
 		for(var j=0; j<cells[i].length; j++) {
 			cells[i][j].addEventListener("click", function(event) {
 				clearCheckClasses();
-				if(this.classList[0] !== "empty" && this.classList[0] !== "option" && !this.classList.contains("captureOption")) {
-					if (playerUp !== getPieceObject(this).team) {
-						console.log("you can only play your own pieces");
-					}
-					else {
+				if(this.classList[0] !== "empty" && 
+					this.classList[0] !== "option" && 
+					!this.classList.contains("captureOption") &&
+					!objAtBat) {
+					if (playerUp == getPieceObject(this).team) {
 						objAtBat = getPieceObject(this);
 						showMoves(objAtBat);
 					}
 				}
-				else if (this.classList[0] === "option" || this.classList.contains("captureOption")) {
-					var targetRow = parseInt(this.classList[1][3]);
-					var targetCol = parseInt(this.classList[2][3]);
+				else if (this.classList[0] === "option" || 
+					this.classList.contains("captureOption") ||
+					this.classList.contains("endangered-king")) {
+					targetRow = parseInt(this.classList[1][3]);
+					targetCol = parseInt(this.classList[2][3]);
 					movePiece(targetRow, targetCol);
-				}
-				else {
-					console.log("empty");
 				}
 			})
 		}
