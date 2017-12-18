@@ -19,7 +19,7 @@ var pieces = [
 },
 {
 	piece: "rook",
-	team: "sillouhette",
+	team: "sillhouette",
 	code: "\u265C",
 	initRow: 7,
 	initCol: 0,
@@ -28,7 +28,7 @@ var pieces = [
 },
 {
 	piece: "rook",
-	team: "sillouhette",
+	team: "sillhouette",
 	code: "\u265C",
 	initRow: 7,
 	initCol: 7,
@@ -55,7 +55,7 @@ var pieces = [
 },
 {
 	piece: "knight",
-  	team: "sillouhette",
+  	team: "sillhouette",
   	code: "\u265E",
   	initRow: 7,
   	initCol: 1,
@@ -64,7 +64,7 @@ var pieces = [
 },
 {
 	piece: "knight",
-  	team: "sillouhette",
+  	team: "sillhouette",
   	code: "\u265E",
   	initRow: 7,
   	initCol: 6,
@@ -91,7 +91,7 @@ var pieces = [
 },
 {
 	piece: "bishop",
-  	team: "sillouhette",
+  	team: "sillhouette",
   	code: "\u265D",
   	initRow: 7,
   	initCol: 2,
@@ -100,7 +100,7 @@ var pieces = [
 },
 {
 	piece: "bishop",
-  	team: "sillouhette",
+  	team: "sillhouette",
   	code: "\u265D",
   	initRow: 7,
   	initCol: 5,
@@ -118,7 +118,7 @@ var pieces = [
 },
 {
 	piece: "queen",
-	team: "sillouhette",
+	team: "sillhouette",
 	code: "\u265B",
 	initRow: 7,
 	initCol: 3,
@@ -136,9 +136,9 @@ var pieces = [
 	currCol: 4
 },
 {
-	//king sillouhette
+	//king sillhouette
 	piece: "king",
-	team: "sillouhette",
+	team: "sillhouette",
 	code: "\u265A",
 	initRow: 7,
 	initCol: 4,
@@ -219,7 +219,7 @@ var pieces = [
 },
 {
 	piece: "pawn", 
-	team: "sillouhette",
+	team: "sillhouette",
 	code: "\u265F",
 	initRow: 6,
 	initCol: 0,
@@ -228,7 +228,7 @@ var pieces = [
 },
 {
 	piece: "pawn", 
-	team: "sillouhette",
+	team: "sillhouette",
 	code: "\u265F",
 	initRow: 6,
 	initCol: 1,
@@ -237,7 +237,7 @@ var pieces = [
 },
 {
 	piece: "pawn", 
-	team: "sillouhette",
+	team: "sillhouette",
 	code: "\u265F",
 	initRow: 6,
 	initCol: 2,
@@ -246,7 +246,7 @@ var pieces = [
 },
 {
 	piece: "pawn", 
-	team: "sillouhette",
+	team: "sillhouette",
 	code: "\u265F",
 	initRow: 6,
 	initCol: 3,
@@ -255,7 +255,7 @@ var pieces = [
 },
 {
 	piece: "pawn", 
-	team: "sillouhette",
+	team: "sillhouette",
 	code: "\u265F",
 	initRow: 6,
 	initCol: 4,
@@ -264,7 +264,7 @@ var pieces = [
 },
 {
 	piece: "pawn", 
-	team: "sillouhette",
+	team: "sillhouette",
 	code: "\u265F",
 	initRow: 6,
 	initCol: 5,
@@ -273,7 +273,7 @@ var pieces = [
 },
 {
 	piece: "pawn", 
-	team: "sillouhette",
+	team: "sillhouette",
 	code: "\u265F",
 	initRow: 6,
 	initCol: 6,
@@ -282,7 +282,7 @@ var pieces = [
 },
 {
 	piece: "pawn", 
-	team: "sillouhette",
+	team: "sillhouette",
 	code: "\u265F",
 	initRow: 6,
 	initCol: 7,

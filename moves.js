@@ -1,5 +1,14 @@
+// The functions in this file are called by showMoves() (in gameplay.js).
+// They add the appropriate classes each time the playerUp clicks the
+// piece they wish to move.
+
 var destructionPath = [];
 
+//checkCaptures():
+//	handles the case when a piece occupies the square that the
+//	objAtBat could potentially move into on this turn - 
+//	adds "captureOption" cass if the square contains an enemy piece
+//	and adds check-related classes if someone is in check
 function checkCaptures(attackingPiece, i,j) {
 	if(i>=0 && i<8 && j>=0 && j<8 && !cells[i][j].classList.contains("empty")) {
 		mysteryObj = getPieceObject(cells[i][j]);
@@ -17,6 +26,7 @@ function checkCaptures(attackingPiece, i,j) {
 	destructionPath = [];
 }
 
+//For rook and queen
 function displayLinearMoves(piece) {
 	var i = piece.currRow;
 	var j = piece.currCol;
@@ -56,7 +66,7 @@ function displayLinearMoves(piece) {
 	}
 	checkCaptures(piece, i, j);
 }
-
+//For bishop and queen
 function displayDiagonalMoves(piece) {
 	// down, right direction
 	var i = piece.currRow+1;
@@ -132,16 +142,7 @@ function displayPawnMoves(piece) {
 	for(var k=0; k<captureOptionsArr.length; k++) {
 		m = captureOptionsArr[k].i;
 		n = captureOptionsArr[k].j;
-		if(m>=0 && m<8 && n>=0 && n<8 && !cells[m][n].classList.contains("empty")) {
-			mysteryObj = getPieceObject(cells[m][n]);
-			if(mysteryObj.team !== piece.team) {
-				cells[m][n].classList.add("captureOption");
-				if (mysteryObj.piece === "king") {
-					cells[piece.currRow][piece.currCol].classList.add("kingCaptureOption");
-					cells[m][n].classList.add("endangered-king");
-				}
-			}
-		}
+		checkCaptures(piece, m, n);
 	}
 }
 
@@ -162,15 +163,8 @@ function displayKnightMoves(piece) {
 		if(m>=0 && m<8 && n>=0 && n<8 && cells[m][n].classList.contains("empty")) {
 			cells[m][n].classList.replace("empty", "option");
 		}
-		else if (m>=0 && m<8 && n>=0 && n<8){
-			mysteryObj = getPieceObject(cells[m][n]);
-			if(mysteryObj.team !== piece.team) {
-				cells[m][n].classList.add("captureOption");
-				if (mysteryObj.piece === "king") {
-					cells[piece.currRow][piece.currCol].classList.add("kingCaptureOption");
-					cells[m][n].classList.add("endangered-king");
-				}
-			}
+		else {
+			checkCaptures(piece, m, n);
 		}
 	}
 }
@@ -192,16 +186,8 @@ function displayKingMoves(piece) {
 		if(m>=0 && m<8 && n>=0 && n<8 && cells[m][n].classList.contains("empty")) {
 			cells[m][n].classList.replace("empty", "option");
 		}
-		else if (m>=0 && m<8 && n>=0 && n<8){
-			mysteryObj = getPieceObject(cells[m][n]);
-			if(mysteryObj.team !== piece.team) {
-				cells[m][n].classList.add("captureOption");
-				if (mysteryObj.piece === "king") {
-					cells[piece.currRow][piece.currCol].classList.add("kingCaptureOption");
-					cells[m][n].classList.add("endangered-king");
-				}
-			}
+		else {
+			checkCaptures(piece, m, n);
 		}
 	}
-
 }
