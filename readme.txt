@@ -41,4 +41,7 @@ Issues and potential improvements:
 - currently: "How To Play" link opens a wikihow page.
 - goal: have a self-coded pop-up with instructions
 
+- currently: once the window exceeds a certain width, the control panel has overflow
+- goal: make the dimensions of the different containers play well enough to prevent this from happening
+
 

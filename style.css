@@ -60,7 +60,6 @@ main {
   grid-template-rows: 1fr 2fr 1fr 1fr;
   border: #b29600 ridge 15px;
   height: 70vh;
-  width: 20vh;
 }
 span {
   display: block;
@@ -70,7 +69,7 @@ span {
   background: #006400;
 }
 #player-up {
-  font-size: 8vw;
+  font-size: 4vh;
 }
 #message-board, #player-display {
   display: flex;
